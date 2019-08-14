@@ -43,6 +43,11 @@ spec:
           secret:
             secretName: spark-webhook-certs
       {{- end }}
+        - name: v3io-fuse
+          flexVolume:
+            driver: "v3io/fuse"
+            secretRef:
+              name: spark-operator-v3io-fuse
       containers:
       - name: sparkoperator
         image: {{ .Values.operatorImageName }}:{{ .Values.operatorVersion }}
@@ -51,6 +56,8 @@ spec:
         volumeMounts:
           - name: webhook-certs
             mountPath: /etc/webhook-certs
+          - name: v3io-fuse
+            mountPath: /v3io
         {{- end }}
         {{- if .Values.enableMetrics }}
         ports:
